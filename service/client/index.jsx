@@ -1,6 +1,14 @@
-// import React from "react";
-// import ReactDOM from "react-dom";
-import NameOfTheService from "./NameOfTheService.jsx";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.jsx"
 
-window.NameOfTheService = NameOfTheService;
-// ReactDOM.render(<NameOfTheService />, document.getElementById("name-of-the-service"));
+
+ReactDOM.render(
+    <React.StrictMode>
+        <App  />
+    </React.StrictMode>,
+    document.getElementById('root')
+);
+
+
+

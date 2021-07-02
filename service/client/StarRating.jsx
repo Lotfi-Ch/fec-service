@@ -40,13 +40,3 @@ function StarRating(props) {
 
 export default StarRating
 
-//     < StarRatings
-// className = "flex test-xs"
-// isHalf = { true}
-// rating = { rating }
-// edit = { false}
-// starRatedColor = "#ffc107"
-// starDimension = "20px"
-// starSpacing = "2px"
-//     /
-// >

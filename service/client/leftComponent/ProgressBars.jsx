@@ -49,24 +49,58 @@ const Progress = (props) => {
     }
 
 
-
     progress()
 
     return (
         <>
-            <div>5 stars
+            <div onClick={() => {
+                if (props.stars === 5) {
+                    props.change("relevent")
+                } else {
+                    props.change("stars")
+                    props.setStar(5)
+                }
+            }}>5 stars
                 {props.data && <ProgressBar bgColor="#32CD32" completed={(star55 / sum) * 100} />}
             </div>
-            <div >4 stars
+            <div onClick={() => {
+                if (props.stars === 4) {
+                    props.change("relevent")
+                } else {
+                    props.change("stars")
+                    props.setStar(4)
+                }
+            }} >4 stars
                 {props.data && <ProgressBar bgColor="#32CD32" completed={(star44 / sum) * 100} />}
             </div>
-            <div >3 stars
+            <div onClick={() => {
+                if (props.stars === 3) {
+                    props.change("relevent")
+                } else {
+                    props.change("stars")
+                    props.setStar(3)
+                }
+            }} >3 stars
                 {props.data && <ProgressBar bgColor="#32CD32" completed={(star33 / sum) * 100} />}
             </div>
-            <div >2 stars
+            <div onClick={() => {
+                if (props.stars === 2) {
+                    props.change("relevent")
+                } else {
+                    props.change("stars")
+                    props.setStar(2)
+                }
+            }} >2 stars
                 {props.data && <ProgressBar bgColor="#32CD32" completed={(star22 / sum) * 100} />}
             </div>
-            <div >1 stars
+            <div onClick={() => {
+                if (props.stars === 1) {
+                    props.change("relevent")
+                } else {
+                    props.change("stars")
+                    props.setStar(1)
+                }
+            }}  >1 stars
                 {props.data && <ProgressBar bgColor="#32CD32" completed={(star11 / sum) * 100} />}
             </div>
         </>

@@ -1,15 +1,35 @@
 import "./index.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios"
-import StarRating from './StarRating.jsx';
-import Progress from "./ProgressBars.jsx";
 import StarRatings from "react-star-ratings";
+
+import StarRating from './StarRating.jsx';
+import Progress from "./leftComponent/ProgressBars.jsx";
+import Newest from "./SortingBy/Newest.jsx";
+import Helpful from "./SortingBy/Helpful.jsx";
+import Relevant from "./SortingBy/Relevant.jsx";
+import Rating from "./leftComponent/Rating.jsx";
+
+
+
 
 
 function App() {
     const [data, setData] = useState([]);
-    const [product_id, setId] = useState(11002);
+    const [product_id, setId] = useState(11001);
     const [rating, setRating] = useState(null)
+
+
+    const [newest, setNew] = useState(false)
+    const [helpful, setHelp] = useState(false)
+    const [relevant, setRelevant] = useState(true)
+
+    const [stars, setStar] = useState(null)
+
+    const [ratingStars, setRatingStars] = useState(false)
+
+    const [recommend, setRecommend] = useState(false)
+    const [percentage, setPercentage] = useState(0)
 
 
 
@@ -24,7 +44,48 @@ function App() {
         }, []
     )
 
+    const changeRender = (val) => {
+        if (val === "newest") {
+            setRelevant(false)
+            setNew(true)
+            setHelp(false)
+            setRatingStars(false)
+        } else if (val === "helpful") {
+            setRelevant(false)
+            setNew(false)
+            setHelp(true)
+            setRatingStars(false)
+        } else if (val === "relevent") {
+            setRelevant(true)
+            setNew(false)
+            setHelp(false)
+            setRatingStars(false)
+        } else if (val === "stars") {
+            setRelevant(false)
+            setNew(false)
+            setHelp(false)
+            setRatingStars(true)
+        }
+    }
 
+    function recommended() {
+
+        if (data.results && !recommend) {
+            let result;
+            setRecommend(true)
+            const sum = data.results.length
+
+            let count = 0
+            data.results.map((review) => {
+                if (review.recommend) count++
+            })
+            result = (count / sum) * 100
+            setPercentage(result)
+        }
+    }
+    recommended()
+
+    console.log(data.results, "recommend")
 
     return (
         <>
@@ -35,8 +96,8 @@ function App() {
                         <div className="text-4xl font-medium">{rating}</div>
                         <StarRating className="content-end" data={data.results} rating={rating} average={setRating} />
                     </div>
-                    <div>100% of reviews recommend this product</div>
-                    <Progress data={data.results} />
+                    <div>{percentage}% of reviews recommend this product</div>
+                    <Progress change={changeRender} stars={stars} setStar={setStar} data={data.results} />
                     <div> Size </div>
                     <div>bar of the size </div>
                     <div> Comfort </div>
@@ -45,56 +106,17 @@ function App() {
                 </section>
                 <section className="flex-grow p-2 ">
                     <div className="flex">
-                        <p className="font-medium text-2xl">{data.count} reviews, sorted by</p>
-                        <select className="gap-2" >
-                            <option className="gap-2">relavant reviews</option>
-                            <option className="gap-2">newest reviews</option>
-                            <option className="gap-2">helpful reviews</option>
+                        <p className="font-medium text-2xl">{data.results && data.results.length} reviews, sorted by</p>
+                        <select onChange={(e) => changeRender(e.target.value)} className="gap-2" >
+                            <option value={"relevent"} className="gap-2">relavant reviews</option>
+                            <option value={"newest"} className="gap-2">newest reviews</option>
+                            <option value={"helpful"} className="gap-2">helpful reviews</option>
                         </select>
                     </div>
-                    <div>
-                        {data.results && data.results.map((review) => {
-                            return (<div key={data.results.indexOf(review)} className="border-b-2">
-                                <div className="flex justify-between">
-                                    <StarRatings
-                                        count={5}
-                                        rating={review.rating}
-                                        size={32}
-                                        isHalf={true}
-                                        emptyIcon={<i i className="far fa-star" ></i >}
-                                        halfIcon={<i i className="fa fa-star-half-alt" ></i >}
-                                        fullIcon={<i i className="fa fa-star" ></i >}
-                                        starRatedColor="#ffd700"
-                                        starDimension="15px"
-                                        starSpacing="2px"
-                                    />
-                                    <div className="flex justify-end">
-                                        <div>{review.reviewer_name} </div>
-                                        <div>{review.date.slice(0, 10)} </div>
-                                    </div>
-                                </div>
-                                <div className="font-medium">{review.summary} </div>
-                                <div>{review.body} </div>
-                                <div className="rounded bg-gray-200">
-                                    <p>Response: </p>
-                                    <div> {review.response} </div>
-                                </div>
-                                <div className="flex gap-2 text-xs">
-                                    <div className="font-medium "> helpful ?</div>
-                                    <a>Yes |</a> <a>Report</a>
-                                </div>
-
-                            </div>)
-                        })}
-
-
-
-
-
-
-
-                    </div>
-
+                    {relevant && <Relevant className="border-b-2" data={data.results} />}
+                    {newest && <Newest className="border-b-2" data={data.results} />}
+                    {helpful && <Helpful className="border-b-2" data={data.results} />}
+                    {ratingStars && <Rating className="border-b-2" stars={stars} data={data.results} />}
                 </section>
             </div>
         </>

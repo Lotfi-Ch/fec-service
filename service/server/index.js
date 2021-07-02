@@ -29,7 +29,7 @@ app.get('/reviews/:product_id', (req, res) => {
       Authorization: process.env.GITHUB_API, // the auth token header
     },
     params: {
-      product_id: 11002
+      product_id: 11001
     }
   }).then(result => {
     console.log("data here", result.data)

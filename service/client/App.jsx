@@ -1,7 +1,6 @@
 import "./index.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios"
-import StarRatings from "react-star-ratings";
 
 import StarRating from './StarRating.jsx';
 import Progress from "./leftComponent/ProgressBars.jsx";
@@ -9,6 +8,9 @@ import Newest from "./SortingBy/Newest.jsx";
 import Helpful from "./SortingBy/Helpful.jsx";
 import Relevant from "./SortingBy/Relevant.jsx";
 import Rating from "./leftComponent/Rating.jsx";
+import Characteristics from "./leftComponent/Characteristics.jsx";
+
+
 
 
 
@@ -16,18 +18,14 @@ import Rating from "./leftComponent/Rating.jsx";
 
 function App() {
     const [data, setData] = useState([]);
+    const [characteristics, setCharacteristics] = useState([])
     const [product_id, setId] = useState(11001);
     const [rating, setRating] = useState(null)
-
-
     const [newest, setNew] = useState(false)
     const [helpful, setHelp] = useState(false)
     const [relevant, setRelevant] = useState(true)
-
     const [stars, setStar] = useState(null)
-
     const [ratingStars, setRatingStars] = useState(false)
-
     const [recommend, setRecommend] = useState(false)
     const [percentage, setPercentage] = useState(0)
 
@@ -38,6 +36,12 @@ function App() {
             axios.get(`/reviews/${product_id}`)
                 .then(result => {
                     setData(result.data)
+                })
+                .catch(err =>
+                    console.error(err))
+            axios.get(`/reviews/meta/${product_id}`)
+                .then(result => {
+                    setCharacteristics(result.data)
                 })
                 .catch(err =>
                     console.error(err))
@@ -79,13 +83,13 @@ function App() {
             data.results.map((review) => {
                 if (review.recommend) count++
             })
-            result = (count / sum) * 100
+            result = ((count / sum) * 100).toFixed(2)
             setPercentage(result)
         }
     }
     recommended()
 
-    console.log(data.results, "recommend")
+
 
     return (
         <>
@@ -98,10 +102,7 @@ function App() {
                     </div>
                     <div>{percentage}% of reviews recommend this product</div>
                     <Progress change={changeRender} stars={stars} setStar={setStar} data={data.results} />
-                    <div> Size </div>
-                    <div>bar of the size </div>
-                    <div> Comfort </div>
-                    <div>bar of the comfort </div>
+                    <Characteristics className="gap-y-44" data={characteristics.characteristics} />
 
                 </section>
                 <section className="flex-grow p-2 ">
@@ -117,6 +118,7 @@ function App() {
                     {newest && <Newest className="border-b-2" data={data.results} />}
                     {helpful && <Helpful className="border-b-2" data={data.results} />}
                     {ratingStars && <Rating className="border-b-2" stars={stars} data={data.results} />}
+
                 </section>
             </div>
         </>

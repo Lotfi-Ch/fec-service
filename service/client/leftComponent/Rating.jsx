@@ -16,7 +16,7 @@ const Rating = (props) => {
 
     return (<div>
         {props.data && filter(props.data).map((review) => {
-            return (<div key={props.data.indexOf(review)} className="border-b-2">
+            return (<div key={props.data.indexOf(review)} className="border-b-2 p-4">
                 <div className="flex justify-between">
                     <StarRatings
                         count={5}

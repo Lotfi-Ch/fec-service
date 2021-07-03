@@ -5,18 +5,23 @@ import StarRatings from "react-star-ratings";
 
 const Newest = (props) => {
 
+    const [addReview, setAddReview] = useState(2)
+
     const sort = (array) => {
         return array.sort(function (a, b) {
             return new Date(b.date) - new Date(a.date);
         })
     };
 
-
+    function addRender() {
+        setAddReview(addReview + 2)
+    }
     console.log("newest ", props.data)
 
     return (<div>
         {props.data && sort(props.data).map((review) => {
-            return (<div key={props.data.indexOf(review)} className="border-b-2">
+            if (props.data.indexOf(review) >= addReview) { return }
+            return (<div key={props.data.indexOf(review)} className="border-b-2 p-4">
                 <div className="flex justify-between">
                     <StarRatings
                         count={5}
@@ -31,9 +36,8 @@ const Newest = (props) => {
                         starSpacing="2px"
                     />
                     <div className="flex justify-end">
-                        <div>{review.reviewer_name} </div>
-                        <p>||</p>
-                        <div>{review.date.slice(0, 10)} </div>
+                        <div className="px-1">{review.reviewer_name} </div>
+                        <div >{review.date.slice(0, 10)} </div>
                     </div>
                 </div>
                 <div className="font-medium">{review.summary} </div>
@@ -49,6 +53,7 @@ const Newest = (props) => {
 
             </div>)
         })}
+        <button className="p-2 border-b-2" onClick={addRender}> MORE REVIEWS</button>
     </div>)
 }
 

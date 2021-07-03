@@ -41,6 +41,24 @@ app.get('/reviews/:product_id', (req, res) => {
 
 });
 
+app.get('/reviews/meta/:product_id', (req, res) => {
+  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hrnyc/reviews/meta/`, {
+    headers: {
+      Authorization: process.env.GITHUB_API, // the auth token header
+    },
+    params: {
+      product_id: 11001
+    }
+  }).then(result => {
+    console.log("charac here", result.data)
+    res.status(200).json(result.data);
+  }).catch(err => {
+    console.log(err)
+    res.status(500)
+  })
+
+});
+
 
 
 app.listen(port, () => {

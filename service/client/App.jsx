@@ -9,6 +9,7 @@ import Helpful from "./SortingBy/Helpful.jsx";
 import Relevant from "./SortingBy/Relevant.jsx";
 import Rating from "./leftComponent/Rating.jsx";
 import Characteristics from "./leftComponent/Characteristics.jsx";
+import PostReview from "./PostReview.jsx";
 
 
 
@@ -24,16 +25,29 @@ function App() {
     const [newest, setNew] = useState(false)
     const [helpful, setHelp] = useState(false)
     const [relevant, setRelevant] = useState(true)
+    const [addReview, setAddReview] = useState(false)
     const [stars, setStar] = useState(null)
     const [ratingStars, setRatingStars] = useState(false)
     const [recommend, setRecommend] = useState(false)
     const [percentage, setPercentage] = useState(0)
 
+    const [sort, setSort] = useState("relevent")
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+
 
 
     useEffect(
         () => {
-            axios.get(`/reviews/${product_id}`)
+            axios.get(`/reviews/${product_id}/${sort}`)
                 .then(result => {
                     setData(result.data)
                 })
@@ -51,24 +65,37 @@ function App() {
     const changeRender = (val) => {
         if (val === "newest") {
             setRelevant(false)
+            setSort("newest")
             setNew(true)
             setHelp(false)
             setRatingStars(false)
+            setAddReview(false)
         } else if (val === "helpful") {
+            setSort("helpful")
             setRelevant(false)
             setNew(false)
             setHelp(true)
             setRatingStars(false)
+            setAddReview(false)
         } else if (val === "relevent") {
+            setSort("relevent")
             setRelevant(true)
             setNew(false)
             setHelp(false)
             setRatingStars(false)
+            setAddReview(false)
         } else if (val === "stars") {
             setRelevant(false)
             setNew(false)
             setHelp(false)
             setRatingStars(true)
+            setAddReview(false)
+        } else if (val === "add review") {
+            setRelevant(false)
+            setNew(false)
+            setHelp(false)
+            setRatingStars(false)
+            setAddReview(true)
         }
     }
 
@@ -83,7 +110,7 @@ function App() {
             data.results.map((review) => {
                 if (review.recommend) count++
             })
-            result = ((count / sum) * 100).toFixed(2)
+            result = ((count / sum) * 100).toFixed()
             setPercentage(result)
         }
     }
@@ -94,35 +121,35 @@ function App() {
     return (
         <>
             <p className="p-8  text-3xl"> RATING & REVIEWS </p>
-            <div className="flex p-8 gap-2">
+            <div className="flex p-8 gap-2 h-auto">
                 <section className="flex-initial p-2 "  >
-                    <div className="flex">
+                    <div className="flex py-2">
                         <div className="text-4xl font-medium">{rating}</div>
                         <StarRating className="content-end" data={data.results} rating={rating} average={setRating} />
                     </div>
-                    <div>{percentage}% of reviews recommend this product</div>
-                    <Progress change={changeRender} stars={stars} setStar={setStar} data={data.results} />
-                    <Characteristics className="gap-y-44" data={characteristics.characteristics} />
+                    <div className="py-2">{percentage}% of reviews recommend this product</div>
+                    <Progress className="py-2" change={changeRender} stars={stars} setStar={setStar} data={data.results} />
+                    <Characteristics className="gap-y-44 p-2" data={characteristics.characteristics} />
 
                 </section>
                 <section className="flex-grow p-2 ">
-                    <div className="flex">
-                        <p className="font-medium text-2xl">{data.results && data.results.length} reviews, sorted by</p>
-                        <select onChange={(e) => changeRender(e.target.value)} className="gap-2" >
-                            <option value={"relevent"} className="gap-2">relavant reviews</option>
+                    <div className="flex font-medium text-2xl px-2">
+                        <p className="font-medium text-2xl px-2">{data.results && data.results.length} reviews, sorted by</p>
+                        <select onChange={(e) => changeRender(e.target.value)} className="gap-2 bg-opacity-0" >
+                            <option value={"relevent"} className="gap-2 ">relavant reviews</option>
                             <option value={"newest"} className="gap-2">newest reviews</option>
                             <option value={"helpful"} className="gap-2">helpful reviews</option>
                         </select>
                     </div>
-                    {relevant && <Relevant className="border-b-2" data={data.results} />}
-                    {newest && <Newest className="border-b-2" data={data.results} />}
-                    {helpful && <Helpful className="border-b-2" data={data.results} />}
+                    {relevant && <Relevant className="border-b-2" change={changeRender} data={data.results} open={openModal} modalOpen={modalIsOpen} modalClose={closeModal} />}
+                    {newest && <Newest className="border-b-2" change={changeRender} data={data.results} />}
+                    {helpful && <Helpful className="border-b-2" change={changeRender} data={data.results} />}
                     {ratingStars && <Rating className="border-b-2" stars={stars} data={data.results} />}
+                    {addReview && <PostReview open={openModal} modalOpen={modalIsOpen} modalClose={closeModal} change={changeRender} product_id={product_id} />}
 
                 </section>
             </div>
         </>
-
     )
 }
 

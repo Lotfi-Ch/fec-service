@@ -120,6 +120,21 @@ app.post(`/reviews`, (req, res) => {
   })
 })
 
+app.put(`/reviews/:review_id/helpful`, (req, res) => {
+  let id = req.params.review_id
+  console.log(id, "iddididididididiidi")
+  axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/hrnyc/reviews/${id}/helpful`, {}, {
+    headers: {
+      Authorization: process.env.GITHUB_API
+    }
+  }).then(result => {
+    res.status(201).send("donnnnnnnnnnnnnnné");
+  }).catch(err => {
+    console.log(err)
+    res.status(500)
+  })
+})
+
 
 app.listen(port, () => {
   console.log(`server running at: http://localhost:${port}`);

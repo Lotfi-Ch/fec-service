@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
+import axios from "axios"
 
 
 
 const Newest = (props) => {
 
     const [addReview, setAddReview] = useState(2)
+    const [helpful, setHelp] = useState(null)
 
     const sort = (array) => {
         return array.sort(function (a, b) {
@@ -18,11 +20,25 @@ const Newest = (props) => {
     }
     console.log("newest ", props.data)
 
+    const update = (review) => {
+        console.log(review.review_id, "hheheheheheheheh")
+        let help = review.helpfulness
+        axios.put(`/reviews/${review.review_id}/helpful`, { help: help++ })
+            .then(result => {
+                console.log("front", result.data)
+            })
+            .catch(err =>
+                console.error(err))
+    }
+
     // className = "overflow-auto h-36"
     return (
         <>
             <div >
                 {props.data && sort(props.data).map((review) => {
+                    if (helpful === null) {
+                        setHelp(review.helpfulness)
+                    }
                     if (props.data.indexOf(review) >= addReview) { return }
                     return (<div key={props.data.indexOf(review)} className="border-b-2 p-4">
                         <div className="flex justify-between p-2">
@@ -51,7 +67,13 @@ const Newest = (props) => {
                         </div>}
                         <div className="flex gap-2 text-xs p-2">
                             <div className="font-medium "> helpful ?</div>
-                            <a>Yes |</a> <a>Report</a>
+                            <div className="font-normal text-gray-500 " > ({review.helpfulness}) </div>
+                            <div onClick={() => {
+                                console.log("test")
+                                update(review)
+                                setHelp(review.helpfulness += 1)
+                            }}>Yes |</div>
+                            <a>Report</a>
                         </div>
 
                     </div>)

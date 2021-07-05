@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
-
+import axios from "axios"
 
 
 const Relevant = (props) => {
 
     const [addReview, setAddReview] = useState(2)
+    const [helpful, setHelp] = useState(null)
 
     console.log("relevant ", props.data)
     const sort = (array) => {
@@ -18,11 +19,25 @@ const Relevant = (props) => {
     }
     console.log(addReview)
 
+    const update = (review) => {
+        console.log(review.review_id, "hheheheheheheheh")
+        let help = review.helpfulness
+        axios.put(`/reviews/${review.review_id}/helpful`, { help: help++ })
+            .then(result => {
+                console.log("front", result.data)
+            })
+            .catch(err =>
+                console.error(err))
+    }
+
     // className = "overflow-auto h-36"
     return (
         <>
             <div >
                 {props.data && sort(props.data).map((review) => {
+                    if (helpful === null) {
+                        setHelp(review.helpfulness)
+                    }
                     if (props.data.indexOf(review) >= addReview) {
                         return
                     }
@@ -54,8 +69,15 @@ const Relevant = (props) => {
                             </div>
                             }
                             <div className="flex gap-2 text-xs p-2">
-                                <div className="font-medium "> helpful ?</div>
-                                <a>Yes |</a> <a>Report</a>
+                                <div className="font-medium "> helpful ? </div>
+
+                                <div className="font-normal text-gray-500 " > ({review.helpfulness}) </div>
+                                <div onClick={() => {
+                                    console.log("test")
+                                    update(review)
+                                    setHelp(review.helpfulness += 1)
+                                }}>Yes |</div>
+                                <a>Report</a>
                             </div>
 
                         </div>)

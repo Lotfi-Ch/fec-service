@@ -3,6 +3,7 @@ import StarRatings from "react-star-ratings";
 import Modal from 'react-modal';
 import { Slider, Typography } from '@material-ui/core';
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 const PostReview = (props) => {
     const customStyles = {
@@ -162,27 +163,35 @@ const PostReview = (props) => {
         setIsOpen(false);
     }
 
+    console.log(props.comfort, "uyufyufévyfuvifyuvfvyf")
     function submit() {
-        axios.post(`/reviews`, {
+        let object = {
             product_id: props.product_id,
             rating: rating,
             summary: summary,
             body: body,
-            recommend: recommend,
+            recommend: true,
             name: name,
-            email: mail,
+            email: "mail@gmail.com",
             photos: photo,
+            size: props.size + "",
+            quality: props.quality + "",
+            width: props.width + "",
+            comfort: props.comfort + "",
             characteristics: {
                 size: size,
-                width: width,
-                comfort: comfort,
                 quality: quality,
-                length: length,
-                fit: fit
+                width: width,
+                comfort: comfort
             }
-        })
+        }
+        axios.post(`/reviews`, object)
             .then(result => {
-                setData(result.data)
+                console.log(result)
+                Swal.fire(
+                    'You post is created!',
+                    'success'
+                )
             })
             .catch(err =>
                 console.error(err))
@@ -221,11 +230,11 @@ const PostReview = (props) => {
 
                 <div className="flex">
                     <div className="p-4">
-                        <input type="radio" value="Yes" name="name" onChange={e => setRecommend(e.target.value)} />
+                        <input type="radio" value={true} name="name" onChange={e => setRecommend(e.target.value)} />
                         <label>Yes</label>
                     </div>
                     <div className="p-4">
-                        <input type="radio" value="No" name="name" onChange={e => setRecommend(e.target.value)} />
+                        <input type="radio" value={false} name="name" onChange={e => setRecommend(e.target.value)} />
                         <label>No</label>
                     </div>
                 </div>

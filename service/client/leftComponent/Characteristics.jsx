@@ -11,13 +11,38 @@ const Characteristics = (props) => {
     const [quality, setQuality] = useState(0)
 
 
+
+    console.log(props.comfort, "hehehehehehehehheheheheh")
+
     const initChar = () => {
         if (props.data && !render) {
             setRender(true)
-            if (props.data.Comfort) setComfort(props.data.Comfort.value.slice(0, 1))
-            if (props.data.Fit !== undefined) setFit(+props.data.Fit.value.slice(0, 1))
-            if (props.data.Length) setLength(+props.data.Length.value.slice(0, 1))
-            if (props.data.Quality) setQuality(+props.data.Quality.value.slice(0, 1))
+            if (props.data.Comfort) {
+                setComfort(props.data.Comfort.value.slice(0, 1))
+                props.comfort(props.data.Comfort.id)
+                console.log(props.data.Comfort.id, "beeeeeeeeeeeeeeeee33333333333")
+            }
+            if (props.data.Width) {
+                props.width(props.data.Width.id)
+                // missing here
+            }
+            if (props.data.Size) {
+                props.size(props.data.Size.id)
+                // here also
+
+            }
+            if (props.data.Fit !== undefined) {
+                setFit(+props.data.Fit.value.slice(0, 1))
+                props.fit(props.data.Fit.id)
+            }
+            if (props.data.Length) {
+                setLength(+props.data.Length.value.slice(0, 1))
+                props.length(props.data.Length.id)
+            }
+            if (props.data.Quality) {
+                setQuality(+props.data.Quality.value.slice(0, 1))
+                props.quality(props.data.Quality.id)
+            }
         }
     }
 

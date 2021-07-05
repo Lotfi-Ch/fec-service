@@ -31,6 +31,8 @@ function App() {
     const [recommend, setRecommend] = useState(false)
     const [percentage, setPercentage] = useState(0)
 
+
+
     const [sort, setSort] = useState("relevent")
 
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -116,7 +118,14 @@ function App() {
     }
     recommended()
 
+    const [sizeid, setSizeId] = useState(0)
+    const [comfortid, setComforteId] = useState(0)
+    const [widtheid, setWidtheId] = useState(0)
+    const [qualityid, setQualityId] = useState(0)
+    const [fitid, setFitId] = useState(0)
+    const [lengthid, setLengthId] = useState(0)
 
+    console.log(comfortid, "ahayyyaaaaaaaaaaaaaaaaaa")
 
     return (
         <>
@@ -129,7 +138,8 @@ function App() {
                     </div>
                     <div className="py-2">{percentage}% of reviews recommend this product</div>
                     <Progress className="py-2" change={changeRender} stars={stars} setStar={setStar} data={data.results} />
-                    <Characteristics className="gap-y-44 p-2" data={characteristics.characteristics} />
+                    <Characteristics className="gap-y-44 p-2" data={characteristics.characteristics}
+                        size={setSizeId} comfort={setComforteId} width={setWidtheId} quality={setQualityId} fit={setFitId} length={setLengthId} />
 
                 </section>
                 <section className="flex-grow p-2 ">
@@ -145,7 +155,8 @@ function App() {
                     {newest && <Newest className="border-b-2" change={changeRender} data={data.results} />}
                     {helpful && <Helpful className="border-b-2" change={changeRender} data={data.results} />}
                     {ratingStars && <Rating className="border-b-2" stars={stars} data={data.results} />}
-                    {addReview && <PostReview open={openModal} modalOpen={modalIsOpen} modalClose={closeModal} change={changeRender} product_id={product_id} />}
+                    {addReview && <PostReview size={sizeid} comfort={comfortid} width={widtheid} quality={qualityid} fit={fitid} length={lengthid}
+                        open={openModal} modalOpen={modalIsOpen} modalClose={closeModal} change={changeRender} product_id={product_id} />}
 
                 </section>
             </div>

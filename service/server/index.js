@@ -5,17 +5,18 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const axios = require('axios');
+
 
 require('dotenv').config()
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 
 
 
@@ -61,63 +62,40 @@ app.get('/reviews/:product_id/:sort', (req, res) => {
 
 app.post(`/reviews`, (req, res) => {
   let data = req.body
-  let dataPost = {
-    product_id: data.product_id,
-    rating: data.rating,
-    summary: data.summary,
-    body: data.body,
-    recommend: data.recommend,
-    name: data.name,
-    email: data.email,
-    photos: [data.photos],
-    characteristics: {
-      size: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.size
-      },
-      width: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.width
-      },
-      comfort: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.comfort
-      },
-      quality: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.quality
-      },
-      length: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.length
-      },
-      fit: {
-        id: Math.floor(Math.random() * 10),
-        value: data.characteristics.fit
-      }
-    }
-  }
-  const option = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: process.env.GITHUB_API // the auth token header
-    }
 
-  }
-  axios({
-    method: 'post',
-    url: 'https://app-hrsei-api.herokuapp.com/api/fec2/hrnyc/reviews',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: process.env.GITHUB_API
+  console.log(data, "hehehehehehehhegfhfhch")
+  let size = data.size;
+  let quality = data.quality;
+  let width = data.width;
+  let comfort = data.comfort
+  axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/hrnyc/reviews`,
+    {
+      "product_id": data.product_id,
+      "rating": data.rating,
+      "summary": data.summary,
+      "body": data.body,
+      "recommend": data.recommend,
+      "name": data.name,
+      "email": data.email,
+      "photos": [data.photos],
+      "characteristics": {
+        [size]: data.characteristics.size,
+        [quality]: data.characteristics.quality,
+        [width]: data.characteristics.width,
+        [comfort]: data.characteristics.comfort
+      }
     },
-    data: dataPost
-  }).then(result => {
-    res.status(201).send("donnnnnnnnnnnnnnné");
-  }).catch(err => {
-    console.log(err)
-    res.status(500)
-  })
+    {
+      headers: {
+        "content-type": "application/json",
+        Authorization: process.env.GITHUB_API
+      }
+    }).then(result => {
+      res.status(201).send("donnnnnnnnnnnnnnné");
+    }).catch(err => {
+      console.log(err)
+      res.status(500)
+    })
 })
 
 app.put(`/reviews/:review_id/helpful`, (req, res) => {

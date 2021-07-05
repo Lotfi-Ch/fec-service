@@ -8,6 +8,7 @@ const Newest = (props) => {
 
     const [addReview, setAddReview] = useState(2)
     const [helpful, setHelp] = useState(null)
+    const [show, setShow] = useState(true)
 
     const sort = (array) => {
         return array.sort(function (a, b) {

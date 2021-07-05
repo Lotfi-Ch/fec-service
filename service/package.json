@@ -24,7 +24,8 @@
     "react-rangeslider": "^2.2.0",
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^5.2.0",
-    "react-star-ratings": "^2.3.0"
+    "react-star-ratings": "^2.3.0",
+    "sweetalert2": "^11.0.18"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

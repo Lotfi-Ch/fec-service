@@ -15,6 +15,10 @@ function StarRating(props) {
                 sum += element.rating
                 i++
             })
+            if (sum === 0) {
+                props.average(0)
+                return
+            }
             let average = sum / i;
             props.average(average)
         }
@@ -39,4 +43,5 @@ function StarRating(props) {
 }
 
 export default StarRating
+
 

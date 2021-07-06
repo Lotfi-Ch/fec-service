@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
-import axios from "axios"
+import axios from "axios";
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 
 
@@ -33,7 +34,7 @@ const Helpful = (props) => {
     // className = "overflow-auto h-36"
     return (
         <>
-            <div >
+            <Scrollbars style={{ width: 870, height: 400 }} >
                 {props.data && sort(props.data).map((review) => {
                     if (helpful === null) {
                         setHelp(review.helpfulness)
@@ -77,7 +78,7 @@ const Helpful = (props) => {
 
                     </div>)
                 })}
-            </div>
+            </Scrollbars>
             <div className="flex">
                 <button className="p-2 border-b-2 hover:bg-gray-200 font-medium " onClick={addRender}> MORE REVIEWS</button>
                 <button className="p-2 border-b-2 hover:bg-gray-200  font-medium" onClick={() => props.change("add review")

@@ -20,7 +20,7 @@ import PostReview from "./PostReview.jsx";
 function App() {
     const [data, setData] = useState([]);
     const [characteristics, setCharacteristics] = useState([])
-    const [product_id, setId] = useState(11001);
+    const [product_id, setId] = useState(11005);
     const [rating, setRating] = useState(null)
     const [newest, setNew] = useState(false)
     const [helpful, setHelp] = useState(false)
@@ -112,6 +112,10 @@ function App() {
             data.results.map((review) => {
                 if (review.recommend) count++
             })
+            if (count === 0) {
+                setPercentage(0)
+                return
+            }
             result = ((count / sum) * 100).toFixed()
             setPercentage(result)
         }
@@ -132,10 +136,10 @@ function App() {
             <p className="p-8  text-3xl"> RATING & REVIEWS </p>
             <div className="flex p-8 gap-2 h-auto">
                 <section className="flex-initial p-2 "  >
-                    <div className="flex py-2">
+                    {rating !== 0 && <div className="flex py-2">
                         <div className="text-4xl font-medium">{rating}</div>
                         <StarRating className="content-end" data={data.results} rating={rating} average={setRating} />
-                    </div>
+                    </div>}
                     <div className="py-2">{percentage}% of reviews recommend this product</div>
                     <Progress className="py-2" change={changeRender} stars={stars} setStar={setStar} data={data.results} />
                     <Characteristics className="gap-y-44 p-2" data={characteristics.characteristics}

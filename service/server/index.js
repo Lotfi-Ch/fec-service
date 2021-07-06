@@ -22,12 +22,13 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 
 app.get('/reviews/meta/:product_id', (req, res) => {
+  let id = req.params.product_id
   axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hrnyc/reviews/meta/`, {
     headers: {
       Authorization: process.env.GITHUB_API, // the auth token header
     },
     params: {
-      product_id: 11005
+      product_id: id,
     }
   }).then(result => {
     console.log("charac here", result.data)

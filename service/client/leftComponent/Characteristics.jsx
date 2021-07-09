@@ -40,7 +40,11 @@ const Characteristics = (props) => {
                 props.length(props.data.Length.id)
             }
             if (props.data.Quality) {
-                setQuality(+props.data.Quality.value.slice(0, 1))
+                if (props.data.Quality.value) {
+                    setQuality(+props.data.Quality.value.slice(0, 1))
+                } else {
+                    setQuality(0)
+                }
                 props.quality(props.data.Quality.id)
             }
         }

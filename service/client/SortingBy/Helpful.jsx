@@ -10,6 +10,7 @@ const Helpful = (props) => {
     const [addReview, setAddReview] = useState(2)
     const [helpful, setHelp] = useState(null)
 
+
     const sort = (array) => {
         return array.sort(function (a, b) {
             return new Date(b.helpfulness) - new Date(a.helpfulness);
@@ -31,10 +32,15 @@ const Helpful = (props) => {
                 console.error(err))
     }
 
-    // className = "overflow-auto h-36"
+    var element = document.getElementById("e");
     return (
         <>
-            <Scrollbars style={{ width: 870, height: 400 }} >
+            <Scrollbars
+                autoShow
+                autoHeight
+                autoWidth
+                autoHeightMin={300}
+                autoHeightMax={400}>
                 {props.data && sort(props.data).map((review) => {
                     if (helpful === null) {
                         setHelp(review.helpfulness)
@@ -68,11 +74,12 @@ const Helpful = (props) => {
                         <div className="flex gap-2 text-xs p-2">
                             <div className="font-medium "> helpful ?</div>
                             <div className="font-normal text-gray-500 " > ({review.helpfulness}) </div>
-                            <div onClick={() => {
+                            <div id="e" onClick={() => {
                                 console.log("test")
                                 update(review)
                                 setHelp(review.helpfulness += 1)
-                            }}>Yes |</div>
+                                $(element).html("Thank you for your feedback");
+                            }}>Yes </div>
                             <a>Report</a>
                         </div>
 

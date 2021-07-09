@@ -19,8 +19,9 @@ import PostReview from "./PostReview.jsx";
 
 function App() {
     const [data, setData] = useState([]);
+    const [reviews, setReviews] = useState(0)
     const [characteristics, setCharacteristics] = useState([])
-    const [product_id, setId] = useState(11005);
+    const [product_id, setId] = useState(11002);
     const [rating, setRating] = useState(null)
     const [newest, setNew] = useState(false)
     const [helpful, setHelp] = useState(false)
@@ -106,6 +107,7 @@ function App() {
         if (data.results && !recommend) {
             let result;
             setRecommend(true)
+            setReviews(data.results.length)
             const sum = data.results.length
 
             let count = 0
@@ -131,6 +133,7 @@ function App() {
 
     console.log(comfortid, "ahayyyaaaaaaaaaaaaaaaaaa")
 
+
     return (
         <>
             <p className="p-8  text-3xl"> RATING & REVIEWS </p>
@@ -148,7 +151,7 @@ function App() {
                 </section>
                 <section className="flex-grow p-2 ">
                     <div className="flex font-medium text-2xl px-2">
-                        <p className="font-medium text-2xl px-2">{data.results && data.results.length} reviews, sorted by</p>
+                        <p className="font-medium text-2xl px-2">{data.results && reviews} reviews, sorted by</p>
                         <select onChange={(e) => changeRender(e.target.value)} className="gap-2 bg-opacity-0" >
                             <option value={"relevent"} className="gap-2 ">relavant reviews</option>
                             <option value={"newest"} className="gap-2">newest reviews</option>
@@ -159,7 +162,7 @@ function App() {
                     {newest && <Newest className="border-b-2" change={changeRender} data={data.results} />}
                     {helpful && <Helpful className="border-b-2" change={changeRender} data={data.results} />}
                     {ratingStars && <Rating className="border-b-2" stars={stars} data={data.results} />}
-                    {addReview && <PostReview size={sizeid} comfort={comfortid} width={widtheid} quality={qualityid} fit={fitid} length={lengthid}
+                    {addReview && <PostReview size={sizeid} reviews={reviews} setReviews={setReviews} comfort={comfortid} width={widtheid} quality={qualityid} fit={fitid} length={lengthid}
                         open={openModal} modalOpen={modalIsOpen} modalClose={closeModal} change={changeRender} product_id={product_id} />}
 
                 </section>

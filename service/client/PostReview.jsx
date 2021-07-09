@@ -188,6 +188,8 @@ const PostReview = (props) => {
         axios.post(`/reviews`, object)
             .then(result => {
                 console.log(result)
+                let reviews = props.reviews + 1
+                props.setReviews(reviews)
                 Swal.fire(
                     'You post is created!',
                     'success'

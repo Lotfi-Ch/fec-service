@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
 import axios from "axios";
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import $ from "jquery";
 
 
 
@@ -75,6 +76,7 @@ const Helpful = (props) => {
                             <div className="font-medium "> helpful ?</div>
                             <div className="font-normal text-gray-500 " > ({review.helpfulness}) </div>
                             <div id="e" onClick={() => {
+                                element.id = review.review_id
                                 console.log("test")
                                 update(review)
                                 setHelp(review.helpfulness += 1)
